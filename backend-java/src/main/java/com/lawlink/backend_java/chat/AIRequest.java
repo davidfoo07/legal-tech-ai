@@ -12,6 +12,11 @@ import java.util.List;
 public class AIRequest {
     private List<ChatMessage> history;
     private String input;
+
+    public AIRequest(List<ChatMessage> history, String input) {
+        this.history = history;
+        this.input = input;
+    }
 }
 
 

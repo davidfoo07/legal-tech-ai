@@ -10,4 +10,11 @@ import lombok.Setter;
 public class AIResponse {
     private String agent;
 
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
+    }
 }

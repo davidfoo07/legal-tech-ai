@@ -30,8 +30,27 @@ public class Chat {
     @CreationTimestamp
     private LocalDateTime timestamp;
 
+    public Chat() {
+    }
+
     public Chat(UUID userId, String message) {
         this.userId = userId;
+        this.message = message;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 }
