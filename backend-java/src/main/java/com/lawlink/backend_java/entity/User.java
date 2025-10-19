@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.user;
+package com.lawlink.backend_java.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,23 +9,22 @@ import java.util.UUID;
 @Table(name="app_user")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
 
     private UUID uid;
+    private String username;
     private String email;
-    private String password;
+    private Integer phone;
 
-    public UUID getUid() {
-        return uid;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUid(UUID uid) {
-        this.uid = uid;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -34,5 +33,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
     }
 }

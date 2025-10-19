@@ -1,5 +1,6 @@
-package com.lawlink.backend_java.user;
+package com.lawlink.backend_java.repository;
 
+import com.lawlink.backend_java.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

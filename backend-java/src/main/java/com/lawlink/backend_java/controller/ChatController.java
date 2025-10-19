@@ -1,6 +1,7 @@
-package com.lawlink.backend_java.chat;
+package com.lawlink.backend_java.controller;
 
 
+import com.lawlink.backend_java.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

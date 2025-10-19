@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.chat;
+package com.lawlink.backend_java.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

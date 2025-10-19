@@ -1,10 +1,9 @@
-package com.lawlink.backend_java.chat;
+package com.lawlink.backend_java.repository;
 
+import com.lawlink.backend_java.entity.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ChatRepository extends JpaRepository<Chat, UUID> {
