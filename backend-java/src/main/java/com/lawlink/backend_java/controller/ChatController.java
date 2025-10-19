@@ -1,14 +1,11 @@
 package com.lawlink.backend_java.controller;
 
 
+import com.lawlink.backend_java.dto.ChatReponse;
+import com.lawlink.backend_java.dto.ChatRequest;
 import com.lawlink.backend_java.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1/chat")
@@ -22,7 +19,7 @@ public class ChatController {
     }
 
     @PostMapping(path = "/send")
-    public String sendInput(@RequestParam String input, @RequestParam UUID userId)  {
-        return chatService.handleNewMessage(input, userId);
+    public ChatReponse sendInput(@RequestBody ChatRequest chatRequest)  {
+        return chatService.handleNewMessage(chatRequest);
     }
 }

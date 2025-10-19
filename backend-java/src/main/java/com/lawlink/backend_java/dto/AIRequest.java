@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Getter
 @Setter
 public class AIRequest {
