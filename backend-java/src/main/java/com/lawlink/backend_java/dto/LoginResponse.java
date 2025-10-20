@@ -4,7 +4,7 @@ public class LoginResponse {
     private String username;
     private String email;
 
-    public LoginResponse(String email, String username) {
+    public LoginResponse(String username, String email) {
         this.username = username;
         this.email = email;
     }
