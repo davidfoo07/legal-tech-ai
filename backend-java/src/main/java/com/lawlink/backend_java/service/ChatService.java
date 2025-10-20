@@ -78,14 +78,19 @@ public class ChatService {
         }
 
         if (isFinalReport(aiResponse.text())) {
-            CaseReportDTO caseReportDTO = objectMapper.readValue(aiResponse.text(), CaseReportDTO.class);
+            String jsonReport = extractJsonFromReport(aiResponse.text());
+
+            CaseReportDTO caseReportDTO = objectMapper.readValue(jsonReport, CaseReportDTO.class);
 
             caseReportService.createCaseReport(caseReportDTO, user);
 
             String finalMessage = "Thank you. Your case summary has been submitted and will be reviewed by our legal team shortly.";
 
-            Chat finalChat = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("assistant", finalMessage)));
-            chatRepository.save(finalChat);
+            Chat userMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("user", chatRequest.getInput())));
+            chatRepository.save(userMessage);
+
+            Chat finalAssistantMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("assistant", finalMessage)));
+            chatRepository.save(finalAssistantMessage);
 
             return new ChatReponse(finalMessage);
 
@@ -104,8 +109,22 @@ public class ChatService {
     }
 
     private boolean isFinalReport(String text) {
-        // A simple check to see if the response is a JSON object matching our structure
-        return text.trim().startsWith("{") && text.contains("\"clientInfo\"");
+        return text.trim().contains("<FINAL_REPORT>");
+    }
+
+    private String extractJsonFromReport(String text) {
+        try {
+            int startIndex = text.indexOf("{");
+            int endIndex = text.lastIndexOf("}");
+            if (startIndex != -1 && endIndex != -1) {
+                return text.substring(startIndex, endIndex + 1);
+            }
+        } catch (Exception e) {
+            // Handle cases where the extraction might fail
+            System.err.println("Failed to extract JSON from final report: " + e.getMessage());
+        }
+        // Return the original text if extraction fails, to allow for debugging
+        return text;
     }
 
     public List<ChatHistoryReponse> getChatHistory(UUID userId) {
