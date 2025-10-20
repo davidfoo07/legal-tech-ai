@@ -39,7 +39,7 @@ public class CaseReport {
     private BigDecimal amount;
 
     @CreationTimestamp
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 
     public CaseReport() {}
 

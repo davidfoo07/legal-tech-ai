@@ -33,7 +33,7 @@ public class Chat {
     private String message;
 
     @CreationTimestamp
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 
     public Chat() {
     }
@@ -47,13 +47,12 @@ public class Chat {
         return id;
     }
 
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setId(UUID id) {
