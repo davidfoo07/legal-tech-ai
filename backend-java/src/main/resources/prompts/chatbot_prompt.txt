@@ -72,7 +72,7 @@ When the user confirms the summary, you MUST generate the JSON object and wrap i
     ]
   },
   "damages": {
-    "estimatedAmount": "...",
+    "estimatedAmount": "...",  // IMPORTANT: This MUST be a pure number without currency symbols or commas. e.g., 5400, not "$5,400"
     "desiredOutcome": "..."
   },
   "evidence": {
