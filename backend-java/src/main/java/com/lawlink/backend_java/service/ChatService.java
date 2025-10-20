@@ -50,7 +50,7 @@ public class ChatService {
         User user = userRepository.findById(chatRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Chat> historyEntities = chatRepository.findByUserUidOrderByTimestampAsc(chatRequest.getUserId());
+        List<Chat> historyEntities = chatRepository.findByUserUidOrderByCreatedAtAsc(chatRequest.getUserId());
 
         List<ChatMessage> historyForAI = historyEntities.stream().map(chat -> {
             try {
@@ -109,7 +109,7 @@ public class ChatService {
     }
 
     public List<ChatHistoryReponse> getChatHistory(UUID userId) {
-        List<Chat> historyEntities = chatRepository.findByUserUidOrderByTimestampAsc(userId);
+        List<Chat> historyEntities = chatRepository.findByUserUidOrderByCreatedAtAsc(userId);
 
         return historyEntities.stream().map(chat -> {
             try {
