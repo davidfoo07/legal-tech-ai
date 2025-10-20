@@ -40,6 +40,23 @@ public class Chat {
         this.message = message;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public User getUser() {
         return user;
     }

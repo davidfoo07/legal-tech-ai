@@ -3,23 +3,25 @@ package com.lawlink.backend_java.dto;
 
 import com.lawlink.backend_java.entity.User;
 
+import java.util.UUID;
+
 public class ChatRequest {
-    private User user;
+    private UUID userId;
     private String input;
 
     public ChatRequest() {}
 
-    public ChatRequest(User user, String input) {
-        this.user = user;
+    public ChatRequest(UUID userId, String input) {
+        this.userId = userId;
         this.input = input;
     }
 
-    public User getUser() {
-        return user;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getInput() {

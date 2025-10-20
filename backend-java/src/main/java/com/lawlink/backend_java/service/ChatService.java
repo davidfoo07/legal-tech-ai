@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
-import com.lawlink.backend_java.dto.CaseReportDTO;
-import com.lawlink.backend_java.dto.ChatMessage;
-import com.lawlink.backend_java.dto.ChatReponse;
-import com.lawlink.backend_java.dto.ChatRequest;
+import com.lawlink.backend_java.dto.*;
 import com.lawlink.backend_java.entity.CaseReport;
 import com.lawlink.backend_java.entity.Chat;
 import com.lawlink.backend_java.entity.User;
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -51,10 +49,10 @@ public class ChatService {
         // To ensure server has started
         System.out.println("Tomcat started on port 8081");
 
-        User user = userRepository.findById(chatRequest.getUser().getUid())
+        User user = userRepository.findById(chatRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Chat> historyEntities = chatRepository.findByUserUidOrderByTimestampAsc(chatRequest.getUser().getUid());
+        List<Chat> historyEntities = chatRepository.findByUserUidOrderByTimestampAsc(chatRequest.getUserId());
 
         List<ChatMessage> historyForAI = historyEntities.stream().map(chat -> {
             try {
@@ -88,7 +86,7 @@ public class ChatService {
 
             String finalMessage = "Thank you. Your case summary has been submitted and will be reviewed by our legal team shortly.";
 
-            Chat finalChat = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("agent", finalMessage)));
+            Chat finalChat = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("assistant", finalMessage)));
             chatRepository.save(finalChat);
 
             return new ChatReponse(finalMessage);
@@ -98,7 +96,7 @@ public class ChatService {
             Chat userMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("user", chatRequest.getInput())));
             chatRepository.save(userMessage);
 
-            Chat aiMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("agent", aiResponse.text())));
+            Chat aiMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("assistant", aiResponse.text())));
             chatRepository.save(aiMessage);
 
             System.out.println(aiResponse.text());
@@ -110,6 +108,25 @@ public class ChatService {
     private boolean isFinalReport(String text) {
         // A simple check to see if the response is a JSON object matching our structure
         return text.trim().startsWith("{") && text.contains("\"clientInfo\"");
+    }
+
+    public List<ChatHistoryReponse> getChatHistory(UUID userId) {
+        List<Chat> historyEntities = chatRepository.findByUserUidOrderByTimestampAsc(userId);
+
+        return historyEntities.stream().map(chat -> {
+            try {
+                ChatMessage message = objectMapper.readValue(chat.getMessage(), ChatMessage.class);
+                return new ChatHistoryReponse(
+                        chat.getId(),
+                        message.getRole(),
+                        message.getContent(),
+                        chat.getTimestamp()
+                );
+            } catch (JsonProcessingException e) {
+                System.err.println("Failed to parse chat message from DB: " + e.getMessage());
+                return null;
+            }
+        }).filter(Objects::nonNull).collect((Collectors.toList()));
     }
 
     // For future use when we host our ai model as another service
