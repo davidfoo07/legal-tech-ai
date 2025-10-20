@@ -19,6 +19,14 @@ public class User {
     private String email;
     private Integer phone;
 
+    public UUID getUid() {
+        return uid;
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid;
+    }
+
     public String getUsername() {
         return username;
     }

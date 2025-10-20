@@ -19,7 +19,7 @@ public class ChatController {
     }
 
     @PostMapping(path = "/send")
-    public ChatReponse sendInput(@RequestBody ChatRequest chatRequest)  {
+    public ChatReponse sendInput(@RequestBody ChatRequest chatRequest) throws Exception {
         return chatService.handleNewMessage(chatRequest);
     }
 }

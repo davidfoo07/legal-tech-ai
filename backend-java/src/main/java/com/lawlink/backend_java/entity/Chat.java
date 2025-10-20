@@ -20,7 +20,10 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.UUID)
 
     private UUID id;
-    private UUID userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
@@ -32,17 +35,17 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(UUID userId, String message) {
-        this.userId = userId;
+    public Chat(User user, String message) {
+        this.user = user;
         this.message = message;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getMessage() {
