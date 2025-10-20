@@ -1,8 +1,11 @@
 package com.lawlink.backend_java.entity;
 
+import com.lawlink.backend_java.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +21,19 @@ public class User {
     private String username;
     private String email;
     private Integer phone;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @PrePersist
+    public void prePersist() {
+        if (role == null) {
+            role = Role.USER;
+        }
+    }
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public UUID getUid() {
         return uid;
@@ -49,5 +65,21 @@ public class User {
 
     public void setPhone(Integer phone) {
         this.phone = phone;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
