@@ -5,24 +5,24 @@ import com.lawlink.backend_java.enums.Role;
 import java.util.UUID;
 
 public class LoginResponse {
-    private UUID userId;
+    private UUID uid;
     private String username;
     private String email;
     private Role role;
 
-    public LoginResponse(UUID userId, String username, String email, Role role) {
-        this.userId = userId;
+    public LoginResponse(UUID uid, String username, String email, Role role) {
+        this.uid = uid;
         this.username = username;
         this.email = email;
         this.role = role;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getUid() {
+        return uid;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setUid(UUID uid) {
+        this.uid = uid;
     }
 
     public String getUsername() {
