@@ -1,12 +1,16 @@
 package com.lawlink.backend_java.dto;
 
+import com.lawlink.backend_java.enums.Role;
+
 public class LoginResponse {
     private String username;
     private String email;
+    private Role role;
 
-    public LoginResponse(String username, String email) {
+    public LoginResponse(String username, String email, Role role) {
         this.username = username;
         this.email = email;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -25,4 +29,11 @@ public class LoginResponse {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
