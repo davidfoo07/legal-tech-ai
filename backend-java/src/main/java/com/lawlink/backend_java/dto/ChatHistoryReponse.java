@@ -10,7 +10,7 @@ public class ChatHistoryReponse {
     private String role;
     private String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime timestamp;
 
     public ChatHistoryReponse(UUID id, String role, String content, LocalDateTime timestamp) {
