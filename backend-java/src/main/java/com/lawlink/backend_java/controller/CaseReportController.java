@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/case-report")
+@RequestMapping(path = "api/v1/admin/case-reports")
 public class CaseReportController {
     private final CaseReportService caseReportService;
 
