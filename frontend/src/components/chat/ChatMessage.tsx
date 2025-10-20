@@ -1,4 +1,8 @@
-import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from '@/components/ui/chat';
+import {
+  ChatBubble,
+  ChatBubbleAvatar,
+  ChatBubbleMessage,
+} from '@/components/ui/chat';
 import { Scale, User } from 'lucide-react';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
@@ -10,13 +14,13 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isAI = message.role === 'assistant';
-  const timestamp = message.createdAt 
+  const timestamp = message.createdAt
     ? format(new Date(message.createdAt), 'HH:mm')
     : '';
 
   return (
     <div className={`flex gap-3 ${!isAI ? 'flex-row-reverse' : ''}`}>
-      <ChatBubbleAvatar fallback={isAI ? 'AI' : 'U'}>
+      <ChatBubbleAvatar>
         {isAI ? (
           <Scale className="w-5 h-5 text-blue-600" />
         ) : (
@@ -54,9 +58,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             <div className="whitespace-pre-wrap">{message.content}</div>
           )}
           {timestamp && (
-            <span className="text-xs opacity-70 mt-1 block">
-              {timestamp}
-            </span>
+            <span className="text-xs opacity-70 mt-1 block">{timestamp}</span>
           )}
         </ChatBubbleMessage>
       </ChatBubble>

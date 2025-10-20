@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { User } from '@/types/user';
-import axios from 'axios';
+import api from '@/api/axios';
 
 interface AuthPageProps {
   onLoginSuccess: (user: User) => void;
@@ -20,13 +20,11 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     setIsLoading(true);
     setError(null);
 
-    const endpoint = isRegistering
-      ? '/api/v1/auth/register'
-      : '/api/v1/auth/login';
+    const endpoint = isRegistering ? '/auth/register' : '/auth/login';
     const payload = isRegistering ? { username, email, phone } : { email };
 
     try {
-      const response = await axios.post(endpoint, payload);
+      const response = await api.post(endpoint, payload);
       const user: User = response.data;
       onLoginSuccess(user);
     } catch (err: any) {

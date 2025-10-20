@@ -24,7 +24,7 @@ export function ChatWindow({ messages, isLoading }: ChatWindowProps) {
           <EmptyState />
         ) : (
           <ChatMessageList>
-            {messages.map((message) => (
+            {messages.map(message => (
               <ChatMessage key={message.id} message={message} />
             ))}
             {isLoading && <TypingIndicator />}
@@ -46,11 +46,11 @@ function EmptyState() {
         Welcome to LawLink AI
       </h2>
       <p className="text-slate-600 max-w-md mb-4">
-        Start by describing your employment situation. I'm here to help you 
+        Start by describing your employment situation. I'm here to help you
         understand your rights and options regarding labour law matters.
       </p>
       <p className="text-sm text-slate-500">
-        Common topics include wrongful termination, unpaid wages, workplace 
+        Common topics include wrongful termination, unpaid wages, workplace
         discrimination, and employment contracts.
       </p>
     </div>
