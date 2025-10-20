@@ -1,5 +1,6 @@
 package com.lawlink.backend_java.controller;
 
+import com.lawlink.backend_java.dto.CaseReportResponse;
 import com.lawlink.backend_java.entity.CaseReport;
 import com.lawlink.backend_java.service.CaseReportService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class CaseReportController {
     }
 
     @GetMapping
-    public List<CaseReport> getAllCaseReports() {
+    public List<CaseReportResponse> getAllCaseReports() {
         return caseReportService.getAllCaseReports();
     }
 }
