@@ -118,7 +118,7 @@ public class ChatService {
                         chat.getId(),
                         message.getRole(),
                         message.getContent(),
-                        chat.getTimestamp()
+                        chat.getCreatedAt()
                 );
             } catch (JsonProcessingException e) {
                 System.err.println("Failed to parse chat message from DB: " + e.getMessage());
