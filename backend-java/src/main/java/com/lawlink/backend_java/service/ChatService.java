@@ -47,8 +47,10 @@ public class ChatService {
         this.systemPrompt = new String(promptResource.getInputStream().readAllBytes());
 //        this.aiWebClient = aiWebClient;
     }
-
     public ChatReponse handleNewMessage(ChatRequest chatRequest) throws Exception {
+        // To ensure server has started
+        System.out.println("Tomcat started on port 8081");
+
         User user = userRepository.findById(chatRequest.getUser().getUid())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
