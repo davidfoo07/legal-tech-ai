@@ -1,5 +1,6 @@
 package com.lawlink.backend_java.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawlink.backend_java.enums.CasePriority;
 import com.lawlink.backend_java.enums.CaseStatus;
 import jakarta.persistence.*;
@@ -39,6 +40,7 @@ public class CaseReport {
     private BigDecimal amount;
 
     @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     public CaseReport() {}

@@ -1,5 +1,6 @@
 package com.lawlink.backend_java.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawlink.backend_java.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,7 @@ public class User {
     }
 
     @CreationTimestamp
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     public UUID getUid() {
