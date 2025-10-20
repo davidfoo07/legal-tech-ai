@@ -2,7 +2,6 @@ package com.lawlink.backend_java.controller;
 
 
 import com.lawlink.backend_java.dto.ChatHistoryReponse;
-import com.lawlink.backend_java.dto.ChatMessage;
 import com.lawlink.backend_java.dto.ChatReponse;
 import com.lawlink.backend_java.dto.ChatRequest;
 import com.lawlink.backend_java.service.ChatService;

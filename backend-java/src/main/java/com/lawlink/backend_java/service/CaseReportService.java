@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawlink.backend_java.dto.CaseReportDTO;
 import com.lawlink.backend_java.entity.CaseReport;
 import com.lawlink.backend_java.entity.User;
-import com.lawlink.backend_java.enums.CasePriority;
 import com.lawlink.backend_java.enums.CaseStatus;
 import com.lawlink.backend_java.repository.CaseReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -23,7 +23,7 @@ public class UserController {
         return userService.createNewUser(user);
     }
 
-    @GetMapping(path = "/login")
+    @PostMapping(path = "/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest);
     }
