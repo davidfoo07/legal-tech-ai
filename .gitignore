@@ -67,8 +67,6 @@ node_modules/
 /backend/src/main/resources/application-*.properties
 
 # Maven/Gradle local files
-.mvn/
-/backend/.mvn/
 /backend/.gradle/
 /backend/build/
 /backend/out/
