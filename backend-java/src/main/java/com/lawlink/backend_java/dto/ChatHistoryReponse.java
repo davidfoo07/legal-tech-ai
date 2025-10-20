@@ -1,5 +1,7 @@
 package com.lawlink.backend_java.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -7,6 +9,8 @@ public class ChatHistoryReponse {
     private UUID id;
     private String role;
     private String content;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime timestamp;
 
     public ChatHistoryReponse(UUID id, String role, String content, LocalDateTime timestamp) {

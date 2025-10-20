@@ -40,7 +40,6 @@ public class CaseReport {
     private BigDecimal amount;
 
     @CreationTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     public CaseReport() {}
