@@ -1,8 +1,8 @@
 # LawLink MVP ⚖️
 
-> An AI-powered legal consultation platform specializing in labour law.
+> An AI-powered legal consultation CRM tool specializing in labour law.
 
-LawLink is an AI chatbot designed to provide initial legal guidance for labour law inquiries. This project serves as the Minimum Viable Product (MVP) for a legal tech startup, leveraging a modern web stack to make legal information more accessible.
+LawLink AI is a specialized legal tech platform designed as an AI chatbot and intelligent CRM focused on labour law case intake. Its primary function is to efficiently collect, structure, and summarize complex client information into prioritized, actionable case reports for law firm review. The goal is to streamline the initial client intake process and reduce administrative time for legal professionals.
 
 ---
 
