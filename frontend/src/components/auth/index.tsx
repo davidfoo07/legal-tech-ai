@@ -109,7 +109,6 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              readOnly={isRegistering}
               placeholder="you@example.com"
               className={`w-full rounded-md border border-slate-300 px-3 py-2 ${isRegistering ? 'bg-slate-100' : ''}`}
             />
