@@ -10,11 +10,6 @@ COPY . .
 # Run the Maven command to build the executable .jar file
 RUN ./mvnw clean package -DskipTests
 
-# --- ADD THESE TWO LINES FOR DEBUGGING ---
-RUN apt-get update && apt-get install -y unzip
-RUN echo "--- CHECKING LIBS ---" && unzip -l /app/target/*.jar | grep postgresql
-# --- END DEBUGGING LINES ---
-
 # Create the final, smaller image ---
 FROM eclipse-temurin:17-jre-jammy
 
