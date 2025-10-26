@@ -57,6 +57,7 @@ public class CaseReportService {
         CaseReportResponse.UserDTO userDto = new CaseReportResponse.UserDTO();
         userDto.setUid(user.getUid());
         userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
         userDto.setUsername(user.getUsername());
 
         dto.setUser(userDto);

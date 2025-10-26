@@ -25,6 +25,7 @@ public class CaseReportResponse {
     public static class UserDTO {
         private UUID uid;
         private String email;
+        private Integer phone;
         private String username;
 
         public String getUsername() {
@@ -41,6 +42,14 @@ public class CaseReportResponse {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public Integer getPhone() {
+            return phone;
+        }
+
+        public void setPhone(Integer phone) {
+            this.phone = phone;
         }
 
         public UUID getUid() {
