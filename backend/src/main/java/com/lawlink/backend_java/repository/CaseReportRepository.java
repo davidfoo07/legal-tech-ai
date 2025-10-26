@@ -11,6 +11,4 @@ import java.util.UUID;
 
 @Repository
 public interface CaseReportRepository extends JpaRepository<CaseReport, UUID> {
-
-    CaseReportResponse findByCaseId(UUID caseId);
 }

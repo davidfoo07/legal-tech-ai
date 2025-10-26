@@ -67,6 +67,6 @@ public class CaseReportService {
     }
 
     public CaseReportResponse getCaseReportById(UUID id) {
-        return caseReportRepository.findByCaseId(id);
+        return caseReportRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new RuntimeException("CaseReport not found with id: " + id));
     }
 }
