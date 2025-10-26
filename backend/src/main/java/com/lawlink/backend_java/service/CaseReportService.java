@@ -10,6 +10,8 @@ import com.lawlink.backend_java.enums.CaseStatus;
 import com.lawlink.backend_java.repository.CaseReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import java.util.List;
@@ -62,5 +64,9 @@ public class CaseReportService {
 
         dto.setUser(userDto);
         return dto;
+    }
+
+    public CaseReportResponse getCaseReportById(UUID id) {
+        return caseReportRepository.findByCaseId(id);
     }
 }
