@@ -1,7 +1,7 @@
 package com.lawlink.backend_java.service;
 
-import com.lawlink.backend_java.dto.LoginRequest;
-import com.lawlink.backend_java.dto.LoginResponse;
+import com.lawlink.backend_java.dto.User.LoginRequest;
+import com.lawlink.backend_java.dto.User.LoginResponse;
 import com.lawlink.backend_java.entity.User;
 import com.lawlink.backend_java.exception.EmailAlreadyExistsException;
 import com.lawlink.backend_java.exception.EmailDoesNotExistException;

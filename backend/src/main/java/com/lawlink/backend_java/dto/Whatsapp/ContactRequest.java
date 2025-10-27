@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Whatsapp;
 
 public class ContactRequest {
     private String phone;

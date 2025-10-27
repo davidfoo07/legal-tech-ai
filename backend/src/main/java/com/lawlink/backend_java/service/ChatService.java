@@ -4,7 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
-import com.lawlink.backend_java.dto.*;
+import com.lawlink.backend_java.dto.Case.CaseReportDTO;
+import com.lawlink.backend_java.dto.Chat.ChatHistoryReponse;
+import com.lawlink.backend_java.dto.Chat.ChatMessage;
+import com.lawlink.backend_java.dto.Chat.ChatReponse;
+import com.lawlink.backend_java.dto.Chat.ChatRequest;
 import com.lawlink.backend_java.entity.Chat;
 import com.lawlink.backend_java.entity.User;
 import com.lawlink.backend_java.repository.ChatRepository;
@@ -44,11 +48,17 @@ public class ChatService {
 //        this.aiWebClient = aiWebClient;
     }
     public ChatReponse handleNewMessage(ChatRequest chatRequest) throws Exception {
-        // To ensure server has started
-        System.out.println("Tomcat started on port 8081");
 
         User user = userRepository.findById(chatRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String userLanguage = user.getLanguage(); // e.g., "en", "zh", "de"
+
+        String languageInstruction = "--- CONTEXT ---\n"
+                + "The user's preferred language is: " + userLanguage + "\n"
+                + "You MUST conduct the entire conversation in this language.\n"
+                + "The final JSON report MUST be in English, but the human-readable summary (clientFacingSummary) MUST be in " + userLanguage + ".\n"
+                + "--- END CONTEXT ---\n\n";
 
         List<Chat> historyEntities = chatRepository.findByUserUidOrderByCreatedAtAsc(chatRequest.getUserId());
 
@@ -66,7 +76,7 @@ public class ChatService {
                 .map(message -> message.getRole() + ": " + message.getContent())
                 .collect(Collectors.joining("\n"));
 
-        String fullPrompt = systemPrompt
+        String fullPrompt = languageInstruction + systemPrompt
                 + "\n\n--- Conversation History ---\n"
                 + historyAsString
                 + "\n\nUser: " + chatRequest.getInput();

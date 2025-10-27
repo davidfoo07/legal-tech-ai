@@ -1,7 +1,6 @@
 package com.lawlink.backend_java.controller;
 
-import com.lawlink.backend_java.dto.CaseReportResponse;
-import com.lawlink.backend_java.entity.CaseReport;
+import com.lawlink.backend_java.dto.Case.CaseReportResponse;
 import com.lawlink.backend_java.service.CaseReportService;
 import org.springframework.web.bind.annotation.*;
 

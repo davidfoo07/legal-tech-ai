@@ -1,7 +1,5 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Chat;
 
-
-import com.lawlink.backend_java.entity.User;
 
 import java.util.UUID;
 

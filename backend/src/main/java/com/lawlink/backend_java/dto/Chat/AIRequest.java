@@ -1,6 +1,5 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Chat;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

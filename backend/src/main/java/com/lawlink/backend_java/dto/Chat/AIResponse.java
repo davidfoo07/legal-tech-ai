@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

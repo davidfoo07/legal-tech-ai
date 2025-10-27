@@ -1,9 +1,9 @@
 package com.lawlink.backend_java.service;
 
-import com.lawlink.backend_java.dto.ContactRequest;
+import com.lawlink.backend_java.dto.Whatsapp.ContactRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.lawlink.backend_java.dto.WhatsappRequest;
+import com.lawlink.backend_java.dto.Whatsapp.WhatsappRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

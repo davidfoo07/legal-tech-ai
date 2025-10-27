@@ -1,8 +1,7 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Whatsapp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record WhatsappRequest (

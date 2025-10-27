@@ -1,9 +1,9 @@
 package com.lawlink.backend_java.controller;
 
 
-import com.lawlink.backend_java.dto.ChatHistoryReponse;
-import com.lawlink.backend_java.dto.ChatReponse;
-import com.lawlink.backend_java.dto.ChatRequest;
+import com.lawlink.backend_java.dto.Chat.ChatHistoryReponse;
+import com.lawlink.backend_java.dto.Chat.ChatReponse;
+import com.lawlink.backend_java.dto.Chat.ChatRequest;
 import com.lawlink.backend_java.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Case;
 
 import com.lawlink.backend_java.enums.CasePriority;
 import com.lawlink.backend_java.enums.CaseStatus;
@@ -25,8 +25,9 @@ public class CaseReportResponse {
     public static class UserDTO {
         private UUID uid;
         private String email;
-        private Integer phone;
+        private String phone;
         private String username;
+        private String language;
 
         public String getUsername() {
             return username;
@@ -44,11 +45,11 @@ public class CaseReportResponse {
             this.email = email;
         }
 
-        public Integer getPhone() {
+        public String getPhone() {
             return phone;
         }
 
-        public void setPhone(Integer phone) {
+        public void setPhone(String phone) {
             this.phone = phone;
         }
 
@@ -58,6 +59,14 @@ public class CaseReportResponse {
 
         public void setUid(UUID uid) {
             this.uid = uid;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
         }
     }
 

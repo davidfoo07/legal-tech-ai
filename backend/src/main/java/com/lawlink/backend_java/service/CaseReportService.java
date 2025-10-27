@@ -2,8 +2,8 @@ package com.lawlink.backend_java.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lawlink.backend_java.dto.CaseReportDTO;
-import com.lawlink.backend_java.dto.CaseReportResponse;
+import com.lawlink.backend_java.dto.Case.CaseReportDTO;
+import com.lawlink.backend_java.dto.Case.CaseReportResponse;
 import com.lawlink.backend_java.entity.CaseReport;
 import com.lawlink.backend_java.entity.User;
 import com.lawlink.backend_java.enums.CaseStatus;
@@ -61,6 +61,7 @@ public class CaseReportService {
         userDto.setEmail(user.getEmail());
         userDto.setPhone(user.getPhone());
         userDto.setUsername(user.getUsername());
+        userDto.setLanguage(user.getLanguage());
 
         dto.setUser(userDto);
         return dto;

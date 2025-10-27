@@ -21,7 +21,8 @@ public class User {
     private UUID uid;
     private String username;
     private String email;
-    private Integer phone;
+    private String phone;
+    private String language;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -60,11 +61,11 @@ public class User {
         this.email = email;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -74,6 +75,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public LocalDateTime getCreatedAt() {

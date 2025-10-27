@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Chat;
 
 public class ChatReponse {
     private String message;

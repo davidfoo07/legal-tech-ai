@@ -1,7 +1,6 @@
 package com.lawlink.backend_java.controller;
 
-import com.lawlink.backend_java.dto.ContactRequest;
-import com.lawlink.backend_java.dto.WhatsappRequest;
+import com.lawlink.backend_java.dto.Whatsapp.ContactRequest;
 import com.lawlink.backend_java.service.WhatsappService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

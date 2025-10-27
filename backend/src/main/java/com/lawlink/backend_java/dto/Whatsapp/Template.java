@@ -1,6 +1,4 @@
-package com.lawlink.backend_java.dto;
-
-import org.apache.commons.codec.language.bm.Lang;
+package com.lawlink.backend_java.dto.Whatsapp;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.User;
 
 import com.lawlink.backend_java.enums.Role;
 

@@ -1,4 +1,4 @@
-package com.lawlink.backend_java.dto;
+package com.lawlink.backend_java.dto.Case;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lawlink.backend_java.enums.CasePriority;
