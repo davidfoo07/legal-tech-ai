@@ -94,7 +94,13 @@ public class ChatService {
 
             caseReportService.createCaseReport(caseReportDTO, user);
 
-            String finalMessage = "Thank you. Your case summary has been submitted and will be reviewed by our legal team shortly.";
+            String finalMessage = switch (userLanguage) {
+                case "de" ->
+                        "Vielen Dank. Ihre Fallzusammenfassung wurde übermittelt und wird in Kürze von unserem Rechtsteam geprüft.";
+                case "zh" -> "谢谢您。您的案件摘要已提交，我们的法律团队将尽快审阅。";
+                default ->
+                        "Thank you. Your case summary has been submitted and will be reviewed by our legal team shortly.";
+            };
 
             Chat userMessage = new Chat(user, objectMapper.writeValueAsString(new ChatMessage("user", chatRequest.getInput())));
             chatRepository.save(userMessage);
