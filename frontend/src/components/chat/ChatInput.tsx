@@ -2,6 +2,7 @@ import { forwardRef } from 'react'; // Import forwardRef
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslation } from 'react-i18next';
 
 interface ChatInputProps {
   input: string;
@@ -13,6 +14,7 @@ interface ChatInputProps {
 // Wrap the component with forwardRef
 export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
   ({ input, handleInputChange, handleSubmit, isLoading }, ref) => {
+    const { t } = useTranslation('chat');
     return (
       <div className="border-t border-slate-200 bg-white">
         <form onSubmit={handleSubmit} className="mx-auto max-w-4xl p-4">
@@ -23,7 +25,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
               value={input}
               onChange={handleInputChange}
               disabled={isLoading}
-              placeholder="Describe your employment situation in detail..."
+              placeholder={t('inputPlaceholder')}
               className="flex-1"
               maxLength={500}
               onKeyDown={e => {
@@ -43,7 +45,7 @@ export const ChatInput = forwardRef<HTMLTextAreaElement, ChatInputProps>(
             </Button>
           </div>
           <div className="mt-2 flex justify-between text-xs text-slate-500">
-            <span>Press Enter to send, Shift+Enter for new line</span>
+            <span>{t('inputShortcut')}</span>{' '}
             <span
               className={
                 input.length > 450 ? 'text-orange-600 font-medium' : ''

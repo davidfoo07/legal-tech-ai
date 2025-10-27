@@ -9,12 +9,14 @@ public class LoginResponse {
     private String username;
     private String email;
     private Role role;
+    private String language;
 
-    public LoginResponse(UUID uid, String username, String email, Role role) {
+    public LoginResponse(UUID uid, String username, String email, Role role, String language) {
         this.uid = uid;
         this.username = username;
         this.email = email;
         this.role = role;
+        this.language = language;
     }
 
     public UUID getUid() {
@@ -47,5 +49,13 @@ public class LoginResponse {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

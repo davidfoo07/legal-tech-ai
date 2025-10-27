@@ -1,0 +1,12 @@
+{
+  "welcomeMessage": "Ich bin Alex. Wie kann ich Ihnen heute bei Ihrer Rechtsangelegenheit helfen, {{user}}?",
+  "inputPlaceholder": "Beschreiben Sie Ihre Beschäftigungssituation im Detail...",
+  "inputShortcut": "Eingabetaste zum Senden, Umschalt+Eingabetaste für neue Zeile",
+  "buttonSend": "Senden",
+  "typingIndicator": "LawLink AI tippt...",
+  "emptyState": {
+    "title": "Willkommen bei LawLink AI",
+    "intro": "Beginnen Sie damit, Ihre Beschäftigungssituation zu beschreiben. Ich bin hier, um Ihnen zu helfen, Ihre Rechte und Optionen in arbeitsrechtlichen Angelegenheiten zu verstehen.",
+    "commonTopics": "Häufige Themen sind unrechtmäßige Kündigung, unbezahlte Löhne, Diskriminierung am Arbeitsplatz und Arbeitsverträge."
+  }
+}

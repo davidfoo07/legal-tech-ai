@@ -1,0 +1,13 @@
+{
+  "appName": "LawLink",
+  "welcomeUser": "Willkommen, {{user}}",
+  "buttonSignOut": "Abmelden",
+  "nav": {
+    "home": "Startseite",
+    "profile": "Profil"
+  },
+  "footer": {
+    "copyright": "© 2025 LawLink. Professionelle KI-Rechtsberatungsplattform.",
+    "disclaimer": "Dies ist ein KI-Assistent nur zu Informationszwecken. Konsultieren Sie einen qualifizierten Anwalt für Rechtsberatung."
+  }
+}

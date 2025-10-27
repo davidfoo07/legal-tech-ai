@@ -1,0 +1,12 @@
+{
+  "welcomeMessage": "我是 Alex。今天我能如何协助您处理您的法律事务，{{user}}？",
+  "inputPlaceholder": "请详细描述您的雇佣情况...",
+  "inputShortcut": "按 Enter 键发送，Shift+Enter 键换行",
+  "buttonSend": "发送",
+  "typingIndicator": "LawLink AI 正在输入...",
+  "emptyState": {
+    "title": "欢迎使用 LawLink AI",
+    "intro": "请首先描述您的雇佣情况。我在这里帮助您了解有关劳动法事务的权利和选择。",
+    "commonTopics": "常见主题包括不当解雇、拖欠工资、职场歧视和雇佣合同。"
+  }
+}

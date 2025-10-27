@@ -1,0 +1,12 @@
+{
+  "welcomeMessage": "I am Alex. How can I assist you with your legal matter today, {{user}}?",
+  "inputPlaceholder": "Describe your employment situation in detail...",
+  "inputShortcut": "Press Enter to send, Shift+Enter for new line",
+  "buttonSend": "Send",
+  "typingIndicator": "LawLink AI is typing...",
+  "emptyState": {
+    "title": "Welcome to LawLink AI",
+    "intro": "Start by describing your employment situation. I'm here to help you understand your rights and options regarding labour law matters.",
+    "commonTopics": "Common topics include wrongful termination, unpaid wages, workplace discrimination, and employment contracts."
+  }
+}

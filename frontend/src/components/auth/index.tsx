@@ -2,18 +2,20 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { User } from '@/types/user';
 import api from '@/api/axios';
-
+import { useTranslation } from 'react-i18next';
 interface AuthPageProps {
   onLoginSuccess: (user: User) => void;
 }
 
 export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
+  const { t } = useTranslation('auth');
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState('en');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +23,9 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     setError(null);
 
     const endpoint = isRegistering ? '/auth/register' : '/auth/login';
-    const payload = isRegistering ? { username, email, phone } : { email };
+    const payload = isRegistering
+      ? { username, email, phone, language }
+      : { email };
 
     try {
       const response = await api.post(endpoint, payload);
@@ -30,10 +34,10 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     } catch (err: any) {
       if (err.response?.status === 404 && !isRegistering) {
         setIsRegistering(true);
-        setError('Email not found. Please register to continue.');
+        // 3. Use the 't' function for translations
+        setError(t('errorNotFound'));
       } else {
-        const message =
-          err.response?.data?.message || 'An unexpected error occurred.';
+        const message = err.response?.data?.message || t('errorDefault');
         setError(message);
       }
     } finally {
@@ -50,12 +54,10 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     <div className="flex min-h-screen items-center justify-center bg-slate-100 p-4">
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
         <h1 className="mb-2 text-center text-2xl font-bold text-slate-800">
-          {isRegistering ? 'Create Your Account' : 'Welcome to LawLink'}
+          {isRegistering ? t('titleRegister') : t('titleLogin')}
         </h1>
         <p className="mb-6 text-center text-sm text-slate-500">
-          {isRegistering
-            ? 'Enter your details to get started.'
-            : 'Enter your email to log in or sign up.'}
+          {isRegistering ? t('subtitleRegister') : t('subtitleLogin')}
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -66,7 +68,7 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
                   htmlFor="username"
                   className="mb-1 block text-sm font-medium"
                 >
-                  Username
+                  {t('usernameLabel')}
                 </label>
                 <input
                   id="username"
@@ -74,7 +76,7 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
                   value={username}
                   onChange={e => setUsername(e.target.value)}
                   required
-                  placeholder="John Doe"
+                  placeholder={t('usernamePlaceholder')}
                   className="w-full rounded-md border border-slate-300 px-3 py-2"
                 />
               </div>
@@ -83,7 +85,7 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
                   htmlFor="phone"
                   className="mb-1 block text-sm font-medium"
                 >
-                  Phone Number
+                  {t('phoneLabel')}
                 </label>
                 <input
                   id="phone"
@@ -91,16 +93,35 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   required
-                  placeholder="Your contact number"
+                  placeholder={t('phonePlaceholder')}
                   className="w-full rounded-md border border-slate-300 px-3 py-2"
                 />
+              </div>
+              <div>
+                <label
+                  htmlFor="language"
+                  className="mb-1 block text-sm font-medium"
+                >
+                  {t('languageSelectLabel')}
+                </label>
+                <select
+                  id="language"
+                  value={language}
+                  onChange={e => setLanguage(e.target.value)}
+                  required
+                  className="w-full rounded-md border border-slate-300 px-3 py-2"
+                >
+                  <option value="en">English</option>
+                  <option value="de">Deutsch (German)</option>
+                  <option value="zh">中文 (Chinese)</option>
+                </select>
               </div>
             </div>
           )}
 
           <div>
             <label htmlFor="email" className="mb-1 block text-sm font-medium">
-              Email Address
+              {t('emailLabel')}
             </label>
             <input
               id="email"
@@ -108,7 +129,7 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              placeholder="you@example.com"
+              placeholder={t('emailPlaceholder')}
               className={`w-full rounded-md border border-slate-300 px-3 py-2 ${isRegistering ? 'bg-slate-100' : ''}`}
             />
           </div>
@@ -123,23 +144,21 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
             className="mt-6 w-full rounded-md bg-blue-800 py-2 font-semibold text-white transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading
-              ? 'Processing...'
+              ? t('buttonLoading')
               : isRegistering
-                ? 'Create Account'
-                : 'Continue'}
+                ? t('buttonRegister')
+                : t('buttonLogin')}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-500">
-          {isRegistering
-            ? 'Already have an account?'
-            : "Don't have an account?"}
+          {isRegistering ? t('toggleToLogin') : t('toggleToRegister')}
           <button
             type="button"
             onClick={toggleForm}
             className="ml-1 font-semibold text-blue-800 hover:underline"
           >
-            {isRegistering ? 'Log In' : 'Sign Up'}
+            {isRegistering ? t('toggleLoginButton') : t('toggleRegisterButton')}
           </button>
         </p>
       </div>

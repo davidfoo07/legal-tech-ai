@@ -1,0 +1,13 @@
+{
+  "appName": "LawLink",
+  "welcomeUser": "Welcome, {{user}}",
+  "buttonSignOut": "Sign Out",
+  "nav": {
+    "home": "Home",
+    "profile": "Profile"
+  },
+  "footer": {
+    "copyright": "© 2025 LawLink. Professional legal AI consultation platform.",
+    "disclaimer": "This is an AI assistant for informational purposes only. Consult a qualified lawyer for legal advice."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "appName": "LawLink",
+  "welcomeUser": "欢迎, {{user}}",
+  "buttonSignOut": "登出",
+  "nav": {
+    "home": "首页",
+    "profile": "个人资料"
+  },
+  "footer": {
+    "copyright": "© 2025 LawLink. 专业法律AI咨询平台。",
+    "disclaimer": "这是一个仅供参考的人工智能助手。请咨询合格的律师以获取法律建议。"
+  }
+}

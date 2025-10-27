@@ -1,12 +1,13 @@
 import { Scale, LogOut } from 'lucide-react';
 import { Container } from './Container';
-import { Button } from '@/components/ui/button'; // Assuming you have a Button component
+import { Button } from '@/components/ui/button';
 import type { User } from '@/types/user';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next'; // 1. Import hook
 
 interface HeaderProps {
   user: User;
-  onSignOut: () => void; // Function to handle sign-out
+  onSignOut: () => void;
 }
 
 const getInitials = (name: string) => {
@@ -19,9 +20,12 @@ const getInitials = (name: string) => {
 };
 
 export const Header: React.FC<HeaderProps> = ({ user, onSignOut }) => {
+  const { t } = useTranslation('common'); // 2. Initialize hook for 'common'
+
   useEffect(() => {
     console.log('user: ', user);
   }, [user]);
+
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
       <Container>
@@ -32,14 +36,18 @@ export const Header: React.FC<HeaderProps> = ({ user, onSignOut }) => {
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-800">
                 <Scale className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-xl font-bold text-slate-900">LawLink</h1>
+              {/* 3. Use 't' function */}
+              <h1 className="text-xl font-bold text-slate-900">
+                {t('appName')}
+              </h1>
             </div>
           </div>
 
           {/* Right Side: User Menu and Sign Out Button */}
           <div className="flex items-center gap-4">
             <span className="hidden text-sm font-medium text-slate-700 sm:block">
-              Welcome, {user.username}
+              {/* 4. Use 't' with interpolation */}
+              {t('welcomeUser', { user: user.username })}
             </span>
             <div
               className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200 text-sm font-semibold text-slate-700"
@@ -50,11 +58,11 @@ export const Header: React.FC<HeaderProps> = ({ user, onSignOut }) => {
             <Button
               variant="outline"
               size="sm"
-              onClick={onSignOut} // Call the sign-out function on click
+              onClick={onSignOut}
               className="flex items-center gap-2"
             >
               <LogOut className="h-4 w-4" />
-              Sign Out
+              {t('buttonSignOut')}
             </Button>
           </div>
         </div>

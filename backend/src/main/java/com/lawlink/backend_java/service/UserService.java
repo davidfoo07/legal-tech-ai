@@ -35,6 +35,6 @@ public class UserService {
                 .orElseThrow(() -> new EmailDoesNotExistException("User with email "
                                                                     + loginRequest.getEmail() + " does not exist"));
 
-        return new LoginResponse(existingUser.getUid(), existingUser.getUsername(), existingUser.getEmail(), existingUser.getRole());
+        return new LoginResponse(existingUser.getUid(), existingUser.getUsername(), existingUser.getEmail(), existingUser.getRole(), existingUser.getLanguage());
     }
 }
