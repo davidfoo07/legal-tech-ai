@@ -28,7 +28,6 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
       const user: User = response.data;
       onLoginSuccess(user);
     } catch (err: any) {
-      // Axios places error details in `err.response`
       if (err.response?.status === 404 && !isRegistering) {
         setIsRegistering(true);
         setError('Email not found. Please register to continue.');

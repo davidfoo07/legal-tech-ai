@@ -5,6 +5,7 @@ import { AuthPage } from './components/auth/index';
 import { ChatPage } from './components/chat/index';
 import { AdminDashboard } from './components/admin/index';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
+import { CaseReportDetailPage } from './components/admin/CaseReportDetailPage';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -39,6 +40,14 @@ function App() {
           element={
             <AdminProtectedRoute user={user}>
               <AdminDashboard user={user} onSignOut={handleSignOut} />
+            </AdminProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/case-report/:id"
+          element={
+            <AdminProtectedRoute user={user}>
+              <CaseReportDetailPage />
             </AdminProtectedRoute>
           }
         />

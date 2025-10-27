@@ -2,8 +2,9 @@ import { useState, useEffect, useMemo, type ChangeEvent } from 'react';
 import api from '@/api/axios';
 import { Header } from '@/components/layout/Header';
 import type { User } from '@/types/user';
-import type { CaseReport } from '@/types/caseReport';
+import type { CaseReport, WhatsappApiPayload } from '@/types/caseReport';
 import { toast } from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 interface AdminDashboardProps {
   user: User;
@@ -45,6 +46,27 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
     setFilters(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleContactUser = async (whatsappApiPayload: WhatsappApiPayload) => {
+    if (!whatsappApiPayload.phoneNumber) {
+      toast.error('No phone number on file for this user.');
+      return;
+    }
+    const contactToast = toast.loading('Sending message...');
+    try {
+      await api.post('/admin/whatsappApi', {
+        recipientName: whatsappApiPayload.recipientName,
+        caseTitle: whatsappApiPayload.caseTitle,
+        phoneNumber: whatsappApiPayload.phoneNumber,
+        firmName: whatsappApiPayload.firmName,
+        lawyerName: whatsappApiPayload.lawyerName,
+      });
+      toast.success('Message sent!', { id: contactToast });
+    } catch (error: unknown) {
+      console.error('Failed to send message', error);
+      toast.error('Could not send message.', { id: contactToast });
+    }
+  };
+
   // useMemo hook to efficiently filter reports only when data or filters change
   const filteredReports = useMemo(() => {
     return caseReports.filter(report => {
@@ -58,6 +80,32 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
       return statusMatch && priorityMatch && amountMatch;
     });
   }, [caseReports, filters]);
+
+  const parseReport = (report: string) => {
+    try {
+      return JSON.parse(report);
+    } catch (error) {
+      console.error('Error parsing report:', error);
+      return null;
+    }
+  };
+
+  const reportsWithParsedDetails = useMemo(() => {
+    return filteredReports.map(report => ({
+      ...report,
+      parsedReport: parseReport(report.report),
+    }));
+  }, [filteredReports]);
+
+  useEffect(() => {
+    if (filteredReports.length > 0) {
+      console.log('Filtered Reports:', filteredReports);
+      console.log(
+        'Reports with Parsed Details:',
+        reportsWithParsedDetails[0].parsedReport.caseDetails.incidentSummary
+      );
+    }
+  }, [filteredReports, reportsWithParsedDetails]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -144,6 +192,14 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       User Email
                     </th>
+                    {/* **UPDATED COLUMN** */}
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Contact
+                    </th>
+                    {/* **NEW COLUMN** */}
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Case Summary
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Status
                     </th>
@@ -151,19 +207,53 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                       Priority
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Amount Involved
+                      Amount
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Submitted On
+                      Submitted
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredReports.length > 0 ? (
-                    filteredReports.map(report => (
+                  {reportsWithParsedDetails.length > 0 ? (
+                    reportsWithParsedDetails.map(report => (
                       <tr key={report.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {report.user.email}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <span
+                            onClick={() =>
+                              handleContactUser({
+                                recipientName:
+                                  report.parsedReport.clientInfo.fullName ||
+                                  'Client',
+                                caseTitle:
+                                  report.parsedReport.caseDetails
+                                    .incidentSummary || 'Case',
+                                phoneNumber:
+                                  report.parsedReport.clientInfo.phone,
+                                firmName: 'LawFirm X',
+                                lawyerName: 'Lawyer Y',
+                              })
+                            }
+                            title="Contact user via WhatsApp"
+                            className="text-green-600 underline cursor-pointer"
+                          >
+                            WhatsApp
+                          </span>
+                        </td>
+
+                        <td className="px-6 py-4 text-md text-gray-500 max-w-x">
+                          <Link
+                            to={`/admin/case-report/${report.id}`}
+                            className="text-blue-600 underline line-clamp-2"
+                            title="Click to view full report"
+                          >
+                            {report.parsedReport
+                              ? report.parsedReport.caseDetails.incidentSummary
+                              : 'Error parsing report.'}
+                          </Link>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {report.status}
@@ -175,14 +265,15 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                           ${report.amountInvolved}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {report.createdAt}
+                          {`${report.createdAt[0]}-${report.createdAt[1]}-${report.createdAt[2]}`}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
+                      {/* **UPDATED: colSpan is now 7** */}
                       <td
-                        colSpan={5}
+                        colSpan={7}
                         className="px-6 py-12 text-center text-sm text-gray-500"
                       >
                         No case reports match the current filters.
