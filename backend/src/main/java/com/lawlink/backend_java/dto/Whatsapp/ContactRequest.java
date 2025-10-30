@@ -1,19 +1,19 @@
 package com.lawlink.backend_java.dto.Whatsapp;
 
 public class ContactRequest {
-    private String phone;
+    private String phoneNumber;
     private String firmName;
     private String lawyerName;
     private String recipientName;
     private String caseTitle;
 
 
-    public ContactRequest(String caseTitle, String recipientName, String lawyerName, String firmName, String phone) {
+    public ContactRequest(String caseTitle, String recipientName, String lawyerName, String firmName, String phoneNumber) {
         this.caseTitle = caseTitle;
         this.recipientName = recipientName;
         this.lawyerName = lawyerName;
         this.firmName = firmName;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getLawyerName() {
@@ -24,12 +24,12 @@ public class ContactRequest {
         this.lawyerName = lawyerName;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getCaseTitle() {

@@ -45,7 +45,7 @@ export const CaseReportDetailPage = () => {
     try {
       await api.post('/admin/whatsappApi', {
         recipientName: report?.clientInfo.fullName || 'Client',
-        caseTitle: report?.caseDetails.keyFacts || 'Case',
+        caseTitle: report?.caseDetails.caseType || 'Case',
         phoneNumber: phone,
         firmName: 'LawFirm X',
         lawyerName: 'Lawyer Y',

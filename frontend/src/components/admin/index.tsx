@@ -229,8 +229,8 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                                   report.parsedReport.clientInfo.fullName ||
                                   'Client',
                                 caseTitle:
-                                  report.parsedReport.caseDetails
-                                    .incidentSummary || 'Case',
+                                  report.parsedReport.caseDetails.caseType ||
+                                  'Case',
                                 phoneNumber:
                                   report.parsedReport.clientInfo.phone,
                                 firmName: 'LawFirm X',

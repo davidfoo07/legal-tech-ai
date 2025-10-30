@@ -1,5 +1,6 @@
 package com.lawlink.backend_java.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lawlink.backend_java.dto.Whatsapp.ContactRequest;
 import com.lawlink.backend_java.service.WhatsappService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class WhatsappController {
     }
 
     @PostMapping
-    public void sendMessage(@RequestBody ContactRequest contactRequest) {
+    public void sendMessage(@RequestBody ContactRequest contactRequest) throws JsonProcessingException {
         whatsappService.sendMessage(contactRequest);
 
     }
