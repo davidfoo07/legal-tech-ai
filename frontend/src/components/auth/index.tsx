@@ -22,6 +22,18 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     setIsLoading(true);
     setError(null);
 
+    if (isRegistering) {
+      // This regex checks for a "+" sign followed by 9 to 15 digits.
+      // This covers most international numbers (e.g., +6591234567, +12125551234)
+      const phoneRegex = /^\+\d{9,15}$/;
+
+      if (!phoneRegex.test(phone)) {
+        setError(t('errorInvalidPhone'));
+        setIsLoading(false);
+        return;
+      }
+    }
+
     const endpoint = isRegistering ? '/auth/register' : '/auth/login';
     const payload = isRegistering
       ? { username, email, phone, language }
