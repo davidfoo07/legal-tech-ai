@@ -81,7 +81,7 @@ public class ChatService {
                 + historyAsString
                 + "\n\nUser: " + chatRequest.getInput();
 
-        GenerateContentResponse aiResponse = geminiClient.models.generateContent("gemini-2.5-flash", fullPrompt, null);
+        GenerateContentResponse aiResponse = geminiClient.models.generateContent("gemini-2.5-flash-lite", fullPrompt, null);
 
         if (aiResponse == null || aiResponse.text() == null) {
             throw new RuntimeException("Error: Invalid response from AI model.");

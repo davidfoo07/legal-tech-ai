@@ -1,0 +1,16 @@
+runtime: custom
+env: flex
+service: default
+
+resources:
+    cpu: 2
+    memory_gb: 2.0
+
+env_variables:
+    SPRING_PROFILES_ACTIVE: prod
+
+beta_settings:
+    cloud_sql_instances: ferrous-griffin-476819-p9:asia-east2:lawlink-ai-db
+
+vpc_access_connector:
+    name: projects/ferrous-griffin-476819-p9/locations/asia-east2/connectors/lawlink-ai-connector
