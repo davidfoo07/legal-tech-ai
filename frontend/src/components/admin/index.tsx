@@ -2,13 +2,32 @@ import { useState, useEffect, useMemo, type ChangeEvent } from 'react';
 import api from '@/api/axios';
 import { Header } from '@/components/layout/Header';
 import type { User } from '@/types/user';
-import type { CaseReport, WhatsappApiPayload } from '@/types/caseReport';
+import type {
+  CaseReport,
+  // WhatsappApiPayload,
+  ParsedCaseReport,
+  PitchParsedCaseReport,
+} from '@/types/caseReport';
 import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 
 interface AdminDashboardProps {
   user: User;
   onSignOut: () => void;
+}
+
+// Helper Type for a unified row object
+interface ReportRowData {
+  isPitchReport: boolean;
+  userEmail: string;
+  contactPhone: string;
+  caseType: string;
+  summary: string;
+  createdAt: string;
+  id: string;
+  status: 'OPEN' | 'UNDER_REVIEW' | 'CONTACTED' | 'CLOSED';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  amountInvolved: number;
 }
 
 export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
@@ -20,14 +39,40 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
     amount: '',
   });
 
+  const createDateFromJavaArray = (dateArray: string) => {
+    // Ensure all elements are treated as numbers using Number()
+    const year = Number(dateArray[0]);
+    const month = Number(dateArray[1]); // This will be 1-based (Jan=1)
+    const day = Number(dateArray[2]);
+    const hour = Number(dateArray[3] || 0);
+    const minute = Number(dateArray[4] || 0);
+    const second = Number(dateArray[5] || 0);
+    const nano = Number(dateArray[6] || 0);
+
+    return new Date(
+      year,
+      month - 1, // Subtract 1 for JS's 0-based month index
+      day,
+      hour,
+      minute,
+      second,
+      nano / 1000000 // Convert nanoseconds to milliseconds
+    );
+  };
+
   useEffect(() => {
     const fetchReports = async () => {
       setIsLoading(true);
       try {
         const response = await api.get('/admin/case-reports');
-        console.log('case report res data:', response.data);
-        console.log('user data:', response.data[0].user.email);
-        setCaseReports(response.data);
+        setCaseReports(
+          response.data.sort(
+            (a: { createdAt: string }, b: { createdAt: string }) =>
+              createDateFromJavaArray(b.createdAt).getTime() -
+              createDateFromJavaArray(a.createdAt).getTime()
+          )
+        );
+        console.log('Fetched case reports:', response.data);
       } catch (error) {
         console.error('Failed to fetch case reports', error);
         toast.error('Could not load case reports.');
@@ -36,7 +81,7 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
       }
     };
     fetchReports();
-  }, []); // Empty dependency array means this runs only once on mount
+  }, []);
 
   // Handler for updating filter state
   const handleFilterChange = (
@@ -46,26 +91,26 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
     setFilters(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleContactUser = async (whatsappApiPayload: WhatsappApiPayload) => {
-    if (!whatsappApiPayload.phoneNumber) {
-      toast.error('No phone number on file for this user.');
-      return;
-    }
-    const contactToast = toast.loading('Sending message...');
-    try {
-      await api.post('/admin/whatsappApi', {
-        recipientName: whatsappApiPayload.recipientName,
-        caseTitle: whatsappApiPayload.caseTitle,
-        phoneNumber: whatsappApiPayload.phoneNumber,
-        firmName: whatsappApiPayload.firmName,
-        lawyerName: whatsappApiPayload.lawyerName,
-      });
-      toast.success('Message sent!', { id: contactToast });
-    } catch (error: unknown) {
-      console.error('Failed to send message', error);
-      toast.error('Could not send message.', { id: contactToast });
-    }
-  };
+  // const handleContactUser = async (whatsappApiPayload: WhatsappApiPayload) => {
+  //   if (!whatsappApiPayload.phoneNumber) {
+  //     toast.error('No phone number on file for this user.');
+  //     return;
+  //   }
+  //   const contactToast = toast.loading('Sending message...');
+  //   try {
+  //     await api.post('/admin/whatsappApi', {
+  //       recipientName: whatsappApiPayload.recipientName,
+  //       caseTitle: whatsappApiPayload.caseTitle,
+  //       phoneNumber: whatsappApiPayload.phoneNumber,
+  //       firmName: 'LawFirm X',
+  //       lawyerName: 'Lawyer Y',
+  //     });
+  //     toast.success('Message sent!', { id: contactToast });
+  //   } catch (error: unknown) {
+  //     console.error('Failed to send message', error);
+  //     toast.error('Could not send message.', { id: contactToast });
+  //   }
+  // };
 
   // useMemo hook to efficiently filter reports only when data or filters change
   const filteredReports = useMemo(() => {
@@ -73,7 +118,7 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
       const statusMatch =
         filters.status === 'ALL' || report.status === filters.status;
       const priorityMatch =
-        filters.priority === 'ALL' || report.priority === filters.priority;
+        filters.priority === 'ALL' || report.priority === report.priority; // Using report.priority to match the Java enum value
       const amountMatch =
         !filters.amount ||
         report.amountInvolved >= Number.parseFloat(filters.amount);
@@ -81,9 +126,35 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
     });
   }, [caseReports, filters]);
 
-  const parseReport = (report: string) => {
+  const parseReport = (report: string, createdAt: string) => {
     try {
-      return JSON.parse(report);
+      const parsed = JSON.parse(report);
+      // Determine report type by checking for a top-level 'caseDescription' key
+      const isPitch = 'caseDescription' in parsed;
+
+      if (isPitch) {
+        // PITCH Report
+        const pitchReport: PitchParsedCaseReport = parsed;
+        return {
+          isPitchReport: true,
+          contactPhone: pitchReport.hasDocuments
+            ? 'Documents Confirmed'
+            : 'No Documents',
+          caseType: pitchReport.caseType,
+          summary: pitchReport.caseDescription,
+          createdAt,
+        };
+      } else {
+        // FULL Report
+        const fullReport: ParsedCaseReport = parsed;
+        return {
+          isPitchReport: false,
+          contactPhone: fullReport.clientInfo?.phone ?? 'N/A',
+          caseType: fullReport.caseDetails?.caseType ?? 'N/A',
+          summary: fullReport.caseDetails?.incidentSummary ?? 'N/A',
+          createdAt,
+        };
+      }
     } catch (error) {
       console.error('Error parsing report:', error);
       return null;
@@ -91,22 +162,28 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
   };
 
   const reportsWithParsedDetails = useMemo(() => {
-    return filteredReports.map(report => ({
-      ...report,
-      parsedReport: parseReport(report.report),
-    }));
+    return filteredReports.map(report => {
+      console.log('Parsing report createdAt:', report.createdAt);
+      const parsedDetails = parseReport(report.report, report.createdAt);
+
+      // Build an explicit ReportRowData to ensure all required fields are present and typed correctly
+      const row: ReportRowData = {
+        isPitchReport: parsedDetails?.isPitchReport ?? false,
+        userEmail: report.user?.email ?? 'N/A',
+        contactPhone:
+          parsedDetails?.contactPhone ?? report.user?.phone ?? 'N/A',
+        caseType: parsedDetails?.caseType ?? 'N/A',
+        summary: parsedDetails?.summary ?? 'N/A',
+        createdAt: report.createdAt,
+        id: report.id,
+        status: report.status,
+        priority: report.priority,
+        amountInvolved: report.amountInvolved,
+      };
+
+      return row;
+    });
   }, [filteredReports]);
-
-  useEffect(() => {
-    if (filteredReports.length > 0) {
-      console.log('Filtered Reports:', filteredReports);
-      console.log(
-        'Reports with Parsed Details:',
-        reportsWithParsedDetails[0].parsedReport.caseDetails.incidentSummary
-      );
-    }
-  }, [filteredReports, reportsWithParsedDetails]);
-
   return (
     <div className="min-h-screen bg-slate-50">
       <Header user={user} onSignOut={onSignOut} />
@@ -192,11 +269,12 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       User Email
                     </th>
-                    {/* **UPDATED COLUMN** */}
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Contact
+                    </th> */}
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Case Type
                     </th>
-                    {/* **NEW COLUMN** */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Case Summary
                     </th>
@@ -219,40 +297,53 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                     reportsWithParsedDetails.map(report => (
                       <tr key={report.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {report.user.email}
+                          {report.userEmail}
+                          {report.isPitchReport && (
+                            <span className="ml-2 px-2 py-0.5 text-xs font-semibold text-orange-800 bg-orange-100 rounded-full">
+                              DEMO
+                            </span>
+                          )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        {/* commented out for demo */}
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm">
                           <span
-                            onClick={() =>
-                              handleContactUser({
-                                recipientName:
-                                  report.parsedReport.clientInfo.fullName ||
-                                  'Client',
-                                caseTitle:
-                                  report.parsedReport.caseDetails.caseType ||
-                                  'Case',
-                                phoneNumber:
-                                  report.parsedReport.clientInfo.phone,
-                                firmName: 'LawFirm X',
-                                lawyerName: 'Lawyer Y',
-                              })
+                            onClick={() => {
+                              if (!report.isPitchReport) {
+                                handleContactUser({
+                                  recipientName:
+                                    (report as any).contactName || 'Client',
+                                  caseTitle:
+                                    (report as any).caseTitle || 'Case',
+                                  phoneNumber: report.contactPhone,
+                                  firmName: 'LawFirm X',
+                                  lawyerName: 'Lawyer Y',
+                                });
+                              } else {
+                                toast.info(
+                                  'Cannot contact Demo User via WhatsApp.'
+                                );
+                              }
+                            }}
+                            title={
+                              report.isPitchReport
+                                ? 'Contact Disabled for Demo'
+                                : 'Contact user via WhatsApp'
                             }
-                            title="Contact user via WhatsApp"
-                            className="text-green-600 underline cursor-pointer"
+                            className={`underline cursor-pointer ${report.isPitchReport ? 'text-gray-400' : 'text-green-600 hover:text-green-700'}`}
                           >
                             WhatsApp
                           </span>
+                        </td> */}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {report.caseType}
                         </td>
-
-                        <td className="px-6 py-4 text-md text-gray-500 max-w-x">
+                        <td className="px-6 py-4 text-md text-gray-500 max-w-xs">
                           <Link
                             to={`/admin/case-report/${report.id}`}
                             className="text-blue-600 underline line-clamp-2"
                             title="Click to view full report"
                           >
-                            {report.parsedReport
-                              ? report.parsedReport.caseDetails.incidentSummary
-                              : 'Error parsing report.'}
+                            {report.summary || 'N/A'}
                           </Link>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -265,13 +356,12 @@ export const AdminDashboard = ({ user, onSignOut }: AdminDashboardProps) => {
                           ${report.amountInvolved}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {`${report.createdAt[0]}-${report.createdAt[1]}-${report.createdAt[2]}`}
+                          {`${createDateFromJavaArray(report.createdAt).toDateString()}`}
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      {/* **UPDATED: colSpan is now 7** */}
                       <td
                         colSpan={7}
                         className="px-6 py-12 text-center text-sm text-gray-500"

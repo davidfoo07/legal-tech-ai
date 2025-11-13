@@ -6,6 +6,7 @@ import { ChatPage } from './components/chat/index';
 import { AdminDashboard } from './components/admin/index';
 import { AdminProtectedRoute } from './components/auth/AdminProtectedRoute';
 import { CaseReportDetailPage } from './components/admin/CaseReportDetailPage';
+import { WaitlistPage } from './components/waitlist';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -28,13 +29,24 @@ function App() {
   };
 
   if (!user) {
-    return <AuthPage onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<AuthPage onLoginSuccess={handleLoginSuccess} />}
+          />
+          <Route path="/waitlist" element={<WaitlistPage />} />
+        </Routes>
+      </BrowserRouter>
+    );
   }
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<ChatPage user={user} />} />
+        <Route path="/waitlist" element={<WaitlistPage />} />
         <Route
           path="/admin"
           element={

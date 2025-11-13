@@ -36,11 +36,16 @@ export const Header: React.FC<HeaderProps> = ({ user, onSignOut }) => {
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-800">
                 <Scale className="h-6 w-6 text-white" />
               </div>
-              {/* 3. Use 't' function */}
               <h1 className="text-xl font-bold text-slate-900">
                 {t('appName')}
               </h1>
             </div>
+
+            {/* --- NEW: WhatsApp Simulator Title --- */}
+            <h2 className="hidden text-sm font-medium text-slate-500 md:block">
+              Whatsapp Simulator
+            </h2>
+            {/* ------------------------------------- */}
           </div>
 
           {/* Right Side: User Menu and Sign Out Button */}

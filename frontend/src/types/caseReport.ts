@@ -36,6 +36,13 @@ export interface ParsedCaseReport {
     employerName: string;
   };
 }
+export interface PitchParsedCaseReport {
+  caseType: string;
+  caseDescription: string;
+  estimatedDamages: number; // Matches the numerical input you are collecting
+  hasDocuments: boolean; // True/False value
+  desiredOutcome: string;
+}
 
 export interface WhatsappApiPayload {
   recipientName: string;

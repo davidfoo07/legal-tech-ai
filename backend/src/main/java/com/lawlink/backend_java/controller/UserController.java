@@ -27,4 +27,9 @@ public class UserController {
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest);
     }
+
+    @PostMapping(path = "/login-as-guest")
+    public LoginResponse login() {
+        return userService.login_as_guest();
+    }
 }

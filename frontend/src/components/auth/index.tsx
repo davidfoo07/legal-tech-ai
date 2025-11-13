@@ -3,12 +3,15 @@ import type { FormEvent } from 'react';
 import type { User } from '@/types/user';
 import api from '@/api/axios';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 interface AuthPageProps {
   onLoginSuccess: (user: User) => void;
 }
 
 export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
   const { t } = useTranslation('auth');
+  const navigate = useNavigate();
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -55,6 +58,28 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const loginAsGuest = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const endpoint = '/auth/login-as-guest';
+    try {
+      const response = await api.post(endpoint);
+      const user: User = response.data;
+      onLoginSuccess(user);
+    } catch (err: any) {
+      const message = err.response?.data?.message || t('errorDefault');
+      setError(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const navigateToWaitlist = () => {
+    navigate('/waitlist'); // <-- 3. Navigation function
   };
 
   const toggleForm = () => {
@@ -162,6 +187,31 @@ export const AuthPage = ({ onLoginSuccess }: AuthPageProps) => {
                 : t('buttonLogin')}
           </button>
         </form>
+
+        {/* Guest Login */}
+        {!isRegistering && (
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={loginAsGuest}
+              disabled={isLoading}
+              className="text-md font-semibold text-blue-800 underline transition hover:text-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {t('Login As Guest')}
+            </button>
+          </div>
+        )}
+
+        <div className="mt-6">
+          <button
+            type="button"
+            onClick={navigateToWaitlist}
+            disabled={isLoading}
+            className="w-full rounded-md border border-blue-800 bg-white py-2 font-semibold text-blue-800 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Join Our WaitList
+          </button>
+        </div>
 
         <p className="mt-6 text-center text-sm text-slate-500">
           {isRegistering ? t('toggleToLogin') : t('toggleToRegister')}

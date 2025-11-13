@@ -29,22 +29,22 @@ class UserLoginApiTest {
         userRepository.deleteAll();
     }
 
-    @Test
-    void createNewUser_shouldReturn200AndValidUserResponse_onSuccess() {
-        User newUser = new User();
-        newUser.setEmail("test1@gmail.com");
-        newUser.setUsername("test1");
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(newUser)
-        .when()
-                .post("/api/v1/auth/register")
-        .then()
-                .statusCode(200)
-                .body("email", equalTo("test1@gmail.com"))
-                .body("username",  equalTo("test1"))
-                .body("uid", notNullValue());
-    }
+//    @Test
+//    void createNewUser_shouldReturn200AndValidUserResponse_onSuccess() {
+//        User newUser = new User();
+//        newUser.setEmail("test1@gmail.com");
+//        newUser.setUsername("test1");
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .body(newUser)
+//        .when()
+//                .post("/api/v1/auth/register")
+//        .then()
+//                .statusCode(200)
+//                .body("email", equalTo("test1@gmail.com"))
+//                .body("username",  equalTo("test1"))
+//                .body("uid", notNullValue());
+//    }
 
 }

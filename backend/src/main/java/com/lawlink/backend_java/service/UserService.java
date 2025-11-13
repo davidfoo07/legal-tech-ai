@@ -37,4 +37,16 @@ public class UserService {
 
         return new LoginResponse(existingUser.getUid(), existingUser.getUsername(), existingUser.getEmail(), existingUser.getRole(), existingUser.getLanguage());
     }
+
+    public LoginResponse login_as_guest() {
+        User newUser = new User();
+        newUser.setUsername("Guest");
+        newUser.setEmail("guest@gmail.com");
+        newUser.setPhone("+9596110670");
+        newUser.setLanguage("en");
+
+        userRepository.save(newUser);
+
+        return new LoginResponse(newUser.getUid(), newUser.getUsername(), newUser.getEmail(), newUser.getRole(), newUser.getLanguage());
+    }
 }

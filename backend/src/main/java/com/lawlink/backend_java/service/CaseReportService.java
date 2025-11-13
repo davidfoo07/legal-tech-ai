@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawlink.backend_java.dto.Case.CaseReportDTO;
 import com.lawlink.backend_java.dto.Case.CaseReportResponse;
+import com.lawlink.backend_java.dto.Case.PitchCaseDTO;
 import com.lawlink.backend_java.entity.CaseReport;
 import com.lawlink.backend_java.entity.User;
+import com.lawlink.backend_java.enums.CasePriority;
 import com.lawlink.backend_java.enums.CaseStatus;
 import com.lawlink.backend_java.repository.CaseReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +71,24 @@ public class CaseReportService {
 
     public CaseReportResponse getCaseReportById(UUID id) {
         return caseReportRepository.findById(id).map(this::convertToDto).orElseThrow(() -> new RuntimeException("CaseReport not found with id: " + id));
+    }
+
+    // Inside CaseReportService.java
+    public void createPitchCaseReport(PitchCaseDTO dto, User user) throws JsonProcessingException {
+        CaseReport caseReport = new CaseReport();
+
+        // 1. Map simple fields directly
+        caseReport.setUser(user);
+        caseReport.setStatus(CaseStatus.NEW);
+
+        // Use a default priority for the demo, e.g., MEDIUM
+        caseReport.setPriority(CasePriority.MEDIUM);
+
+        // 2. Set the amount and the report JSON
+        caseReport.setAmount(dto.estimatedDamages);
+
+        caseReport.setReport(objectMapper.writeValueAsString(dto));
+
+        caseReportRepository.save(caseReport);
     }
 }

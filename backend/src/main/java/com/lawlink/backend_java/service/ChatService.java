@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import com.lawlink.backend_java.dto.Case.CaseReportDTO;
+import com.lawlink.backend_java.dto.Case.PitchCaseDTO;
 import com.lawlink.backend_java.dto.Chat.ChatHistoryReponse;
 import com.lawlink.backend_java.dto.Chat.ChatMessage;
 import com.lawlink.backend_java.dto.Chat.ChatReponse;
@@ -38,7 +39,7 @@ public class ChatService {
 
 
     @Autowired
-    public ChatService(UserRepository userRepository, ChatRepository chatRepository,  ObjectMapper objectMapper , Client geminiClient, @Value("classpath:prompts/chatbot_prompt.txt") Resource promptResource, CaseReportService caseReportService /* , WebClient aiWebClient*/) throws IOException {
+    public ChatService(UserRepository userRepository, ChatRepository chatRepository,  ObjectMapper objectMapper , Client geminiClient, @Value("classpath:prompts/pitch_night_prompt.txt") Resource promptResource, CaseReportService caseReportService /* , WebClient aiWebClient*/) throws IOException {
         this.userRepository = userRepository;
         this.chatRepository = chatRepository;
         this.caseReportService = caseReportService;
@@ -81,7 +82,7 @@ public class ChatService {
                 + historyAsString
                 + "\n\nUser: " + chatRequest.getInput();
 
-        GenerateContentResponse aiResponse = geminiClient.models.generateContent("gemini-2.5-flash-lite", fullPrompt, null);
+        GenerateContentResponse aiResponse = geminiClient.models.generateContent("gemini-2.5-flash", fullPrompt, null);
 
         if (aiResponse == null || aiResponse.text() == null) {
             throw new RuntimeException("Error: Invalid response from AI model.");
@@ -90,9 +91,13 @@ public class ChatService {
         if (isFinalReport(aiResponse.text())) {
             String jsonReport = extractJsonFromReport(aiResponse.text());
 
-            CaseReportDTO caseReportDTO = objectMapper.readValue(jsonReport, CaseReportDTO.class);
+            System.out.println("--- RAW JSON FROM AI (BEFORE PARSING) ---");
+            System.out.println(jsonReport);
+            System.out.println("------------------------------------------");
 
-            caseReportService.createCaseReport(caseReportDTO, user);
+            PitchCaseDTO caseReportDTO = objectMapper.readValue(jsonReport, PitchCaseDTO.class);
+
+            caseReportService.createPitchCaseReport(caseReportDTO, user);
 
             String finalMessage = switch (userLanguage) {
                 case "de" ->
